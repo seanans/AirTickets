@@ -1,7 +1,12 @@
 package com.seanans.AirTickets.ticket.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class CreateFlightDTO {
     private String flightNumber;
     private String departureCity;
@@ -13,4 +18,6 @@ public class CreateFlightDTO {
     private double baseFare;
     private double taxes;
     private double totalCost;
+    private int seats;
+
 }

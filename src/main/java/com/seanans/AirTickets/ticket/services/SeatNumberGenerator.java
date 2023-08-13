@@ -1,7 +1,10 @@
 package com.seanans.AirTickets.ticket.services;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Random;
 
+@Component
 public class SeatNumberGenerator {
 
     private static int generateRandomNumber(int min, int max) {
@@ -16,5 +19,9 @@ public class SeatNumberGenerator {
         char rowChar = (char) ('A' + rowNumber - 1); //Convert rowNumber to character 'A' = 1
 
         return String.format("%c%02d", rowChar, seatNumber);
+    }
+
+    public String generateNumber() {
+        return generateSeatNumber();
     }
 }

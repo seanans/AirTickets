@@ -59,6 +59,11 @@ public class TicketEntity {
     @Column(nullable = false)
     private double totalCost;
 
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false)
+    private boolean isEmpty;
+
     private String firstName;
     private String lastName;
 

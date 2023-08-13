@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("v1/tickets")
-@Api(value = "Users", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"Tickets"}, description = "Tickets Controller")
+@Api(value = "Tickets", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"Tickets"}, description = "Tickets Controller")
 public class TicketsController {
     @Autowired
     private TicketsService ticketsService;
@@ -32,8 +32,8 @@ public class TicketsController {
     }
 
     @PostMapping
-    private ResponseEntity<List<TicketDTO>> createFlight(@RequestBody CreateFlightDTO flightDTO, int seats) {
-        return new ResponseEntity<>(ticketsService.createFlight(flightDTO, seats), HttpStatus.CREATED);
+    private ResponseEntity<List<TicketDTO>> createFlight(@RequestBody CreateFlightDTO flightDTO) {
+        return new ResponseEntity<>(ticketsService.createFlight(flightDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

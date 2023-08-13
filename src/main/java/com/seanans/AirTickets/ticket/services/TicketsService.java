@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TicketsService {
-    List<TicketDTO> createFlight(CreateFlightDTO flightDTO, int quantityOfSeats);
+    List<TicketDTO> createFlight(CreateFlightDTO flightDTO);
 
     //TicketDTO orderTicket(Profile profile, String flightNumber);
 
