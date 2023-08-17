@@ -21,12 +21,15 @@ public class TicketsController {
     @Autowired
     private TicketsService ticketsService;
 
+    // http://localhost:8888/v1/tickets/uuid
     @GetMapping("/{id}")
     private ResponseEntity<TicketDTO> getTicketById(@PathVariable UUID id) {
         return new ResponseEntity<>(ticketsService.getTicketById(id), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{flightNumber}")
+    // http://localhost:8888/v1/tickets/fn/flightNumber
+    // /fn/ -> (flightNumber) -> added due spring error
+    @GetMapping("/fn/{flightNumber}")
     private ResponseEntity<List<TicketDTO>> getTicketsByFlightNumber(@PathVariable String flightNumber) {
         return new ResponseEntity<>(ticketsService.getTicketsByFlightNumber(flightNumber), HttpStatus.ACCEPTED);
     }

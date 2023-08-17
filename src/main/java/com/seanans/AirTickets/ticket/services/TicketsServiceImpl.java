@@ -1,6 +1,7 @@
 package com.seanans.AirTickets.ticket.services;
 
 import com.seanans.AirTickets.exception.ResourceBadRequestException;
+import com.seanans.AirTickets.exception.ResourceNotFoundException;
 import com.seanans.AirTickets.ticket.entity.TicketEntity;
 import com.seanans.AirTickets.ticket.mappers.TicketMapper;
 import com.seanans.AirTickets.ticket.models.CreateFlightDTO;
@@ -18,6 +19,9 @@ import java.util.UUID;
 public class TicketsServiceImpl implements TicketsService {
 
     private static final String BAD_DATA = "You entered incorrect data, please check again";
+    private static final String TICKET_NOT_FOUND = "Ticket not found";
+    private static final String UUID_IS_REQUIRED = "UUID is required";
+    private static final String FLIGHT_NUMBER_IS_REQUIRED = "Flight number is required";
 
     @Autowired
     private TicketsRepository ticketsRepository;
@@ -51,16 +55,27 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     public HttpStatus deleteTicket(UUID id) {
-        return null;
+        ticketsRepository.deleteById(id);
+        return HttpStatus.ACCEPTED;
     }
 
     @Override
     public TicketDTO getTicketById(UUID id) {
-        return null;
+        if(id == null) {
+            throw new ResourceBadRequestException(UUID_IS_REQUIRED);
+        }
+        TicketEntity ticketEntity = ticketsRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(TICKET_NOT_FOUND)
+        );
+        return ticketMapper.ticketEntityToTicketDTO(ticketEntity);
     }
 
     @Override
     public List<TicketDTO> getTicketsByFlightNumber(String flightNumber) {
-        return null;
+        if (flightNumber.isEmpty()) {
+            throw new ResourceBadRequestException(FLIGHT_NUMBER_IS_REQUIRED);
+        }
+        List<TicketEntity> ticketEntities = ticketsRepository.findByFlightNumber(flightNumber);
+        return ticketMapper.ticketEntitiesToTicketDTOs(ticketEntities);
     }
 }
