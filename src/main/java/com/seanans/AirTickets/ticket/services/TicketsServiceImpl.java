@@ -22,6 +22,7 @@ public class TicketsServiceImpl implements TicketsService {
     private static final String TICKET_NOT_FOUND = "Ticket not found";
     private static final String UUID_IS_REQUIRED = "UUID is required";
     private static final String FLIGHT_NUMBER_IS_REQUIRED = "Flight number is required";
+    private static final String SEAT_NUMBER_IS_REQUIRED = "Seat number is required";
 
     @Autowired
     private TicketsRepository ticketsRepository;
@@ -77,5 +78,17 @@ public class TicketsServiceImpl implements TicketsService {
         }
         List<TicketEntity> ticketEntities = ticketsRepository.findByFlightNumber(flightNumber);
         return ticketMapper.ticketEntitiesToTicketDTOs(ticketEntities);
+    }
+    
+    @Override
+    public TicketDTO getTicketBySeatNumber(String flightNumber, String seatNumber) {
+        if (flightNumber.isEmpty()) {
+            throw new ResourceBadRequestException(FLIGHT_NUMBER_IS_REQUIRED);
+        }
+        if (seatNumber.isEmpty()) {
+            throw new ResourceBadRequestException(SEAT_NUMBER_IS_REQUIRED);
+        }
+        TicketEntity ticketEntity = ticketsRepository.findBySeatNumberAndFlightNumber(flightNumber,seatNumber);
+        return ticketMapper.ticketEntityToTicketDTO(ticketEntity);
     }
 }

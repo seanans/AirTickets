@@ -18,4 +18,6 @@ public interface TicketsService {
     TicketDTO getTicketById(UUID id);
 
     List<TicketDTO> getTicketsByFlightNumber(String flightNumber);
+
+    TicketDTO getTicketBySeatNumber(String flightNumber, String seatNumber);
 }
