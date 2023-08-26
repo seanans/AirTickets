@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class orderTicketUserDTO {
+public class OrderTicketUserDTO {
     private String firstName;
     private String lastName;
     private String seatNumber;

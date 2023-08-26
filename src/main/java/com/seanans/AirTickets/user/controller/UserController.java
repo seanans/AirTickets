@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @GetMapping("/{id}")
-    public ResponseEntity<TicketDTO> orderTicket(@RequestBody UUID id) {
+    private ResponseEntity<TicketDTO> orderTicket(@RequestBody UUID id) {
         return new ResponseEntity<>(userService.orderTicket(id), HttpStatus.ACCEPTED);
     }
 }

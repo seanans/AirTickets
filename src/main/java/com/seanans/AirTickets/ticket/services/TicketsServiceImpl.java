@@ -5,6 +5,8 @@ import com.seanans.AirTickets.exception.ResourceNotFoundException;
 import com.seanans.AirTickets.ticket.entity.TicketEntity;
 import com.seanans.AirTickets.ticket.mappers.TicketMapper;
 import com.seanans.AirTickets.ticket.models.CreateFlightDTO;
+import com.seanans.AirTickets.ticket.models.FlightDTO;
+import com.seanans.AirTickets.ticket.models.TicketClassDTO;
 import com.seanans.AirTickets.ticket.models.TicketDTO;
 import com.seanans.AirTickets.ticket.repository.TicketsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,27 +31,37 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Autowired
     private FlightDTOIsValid flightDTOIsValid;
+
     @Autowired
     private SeatNumberGenerator seatNumberGenerator;
+
     @Autowired
     private TicketMapper ticketMapper;
 
     @Override
-    public List<TicketDTO> createFlight(CreateFlightDTO flightDTO) {
-        if (!flightDTOIsValid.isValid(flightDTO)) {
+    public List<TicketDTO> createFlight(CreateFlightDTO createFlightDTO) {
+        if (!flightDTOIsValid.isValid(createFlightDTO)) {
             throw new ResourceBadRequestException(BAD_DATA);
         }
-        int quantityOfSeats = flightDTO.getSeats();
-        if (quantityOfSeats <= 0) {
-            throw new ResourceBadRequestException(BAD_DATA);
-        }
+        FlightDTO flightDTO = ticketMapper.createFlightDTOToFlightDTO(createFlightDTO);
         List<TicketDTO> ticketDTOList = new ArrayList<>();
-        for (int i = 0; i < quantityOfSeats; i++) {
-            TicketEntity ticketEntity = ticketMapper.createFlightDTOToTicketEntity(flightDTO);
-            ticketEntity.setSeatNumber(seatNumberGenerator.generateNumber());
-            TicketDTO ticketDTO = ticketMapper.ticketEntityToTicketDTO(ticketEntity);
-            ticketDTOList.add(ticketDTO);
-            ticketsRepository.save(ticketEntity);
+
+        int typesOfSeatsClasses = createFlightDTO.getSeats().size();
+        for(int i = 0; i < typesOfSeatsClasses; i++) {
+            int seatsOfClass = createFlightDTO.getSeats().get(i).getSeats();
+            TicketClassDTO ticketClassDTO = createFlightDTO.getSeats().get(i);
+            seatNumberGenerator.initializeGenerator(createFlightDTO.getSeats().get(i).getColumns(), createFlightDTO.getSeats().get(i).getRows());
+            for (int k = 0; k < seatsOfClass; k++) {
+                    TicketEntity ticketEntity = ticketMapper.FlightDTOAndTicketClassDTOtoTicketEntity(flightDTO, ticketClassDTO);
+                    String seatNumber = seatNumberGenerator.generateUniqueSeatNumber();
+                    if (seatNumber == null){
+                        throw new ResourceBadRequestException(BAD_DATA);
+                    } else {
+                        ticketEntity.setSeatNumber(seatNumber);
+                    }
+                    ticketsRepository.save(ticketEntity);
+                    ticketDTOList.add(ticketMapper.ticketEntityToTicketDTO(ticketEntity));
+                }
         }
         return ticketDTOList;
     }
