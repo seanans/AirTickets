@@ -47,21 +47,21 @@ public class TicketsServiceImpl implements TicketsService {
         List<TicketDTO> ticketDTOList = new ArrayList<>();
 
         int typesOfSeatsClasses = createFlightDTO.getSeats().size();
-        for(int i = 0; i < typesOfSeatsClasses; i++) {
+        for (int i = 0; i < typesOfSeatsClasses; i++) {
             int seatsOfClass = createFlightDTO.getSeats().get(i).getSeats();
             TicketClassDTO ticketClassDTO = createFlightDTO.getSeats().get(i);
             seatNumberGenerator.initializeGenerator(createFlightDTO.getSeats().get(i).getColumns(), createFlightDTO.getSeats().get(i).getRows());
             for (int k = 0; k < seatsOfClass; k++) {
-                    TicketEntity ticketEntity = ticketMapper.FlightDTOAndTicketClassDTOtoTicketEntity(flightDTO, ticketClassDTO);
-                    String seatNumber = seatNumberGenerator.generateUniqueSeatNumber();
-                    if (seatNumber == null){
-                        throw new ResourceBadRequestException(BAD_DATA);
-                    } else {
-                        ticketEntity.setSeatNumber(seatNumber);
-                    }
-                    ticketsRepository.save(ticketEntity);
-                    ticketDTOList.add(ticketMapper.ticketEntityToTicketDTO(ticketEntity));
+                TicketEntity ticketEntity = ticketMapper.FlightDTOAndTicketClassDTOtoTicketEntity(flightDTO, ticketClassDTO);
+                String seatNumber = seatNumberGenerator.generateUniqueSeatNumber();
+                if (seatNumber == null) {
+                    throw new ResourceBadRequestException(BAD_DATA);
+                } else {
+                    ticketEntity.setSeatNumber(seatNumber);
                 }
+                ticketsRepository.save(ticketEntity);
+                ticketDTOList.add(ticketMapper.ticketEntityToTicketDTO(ticketEntity));
+            }
         }
         return ticketDTOList;
     }
@@ -74,7 +74,7 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     public TicketDTO getTicketById(UUID id) {
-        if(id == null) {
+        if (id == null) {
             throw new ResourceBadRequestException(UUID_IS_REQUIRED);
         }
         TicketEntity ticketEntity = ticketsRepository.findById(id).orElseThrow(
@@ -91,7 +91,7 @@ public class TicketsServiceImpl implements TicketsService {
         List<TicketEntity> ticketEntities = ticketsRepository.findByFlightNumber(flightNumber);
         return ticketMapper.ticketEntitiesToTicketDTOs(ticketEntities);
     }
-    
+
     @Override
     public TicketDTO getTicketBySeatNumber(String flightNumber, String seatNumber) {
         if (flightNumber.isEmpty()) {
@@ -100,7 +100,7 @@ public class TicketsServiceImpl implements TicketsService {
         if (seatNumber.isEmpty()) {
             throw new ResourceBadRequestException(SEAT_NUMBER_IS_REQUIRED);
         }
-        TicketEntity ticketEntity = ticketsRepository.findBySeatNumberAndFlightNumber(flightNumber,seatNumber);
+        TicketEntity ticketEntity = ticketsRepository.findBySeatNumberAndFlightNumber(flightNumber, seatNumber);
         return ticketMapper.ticketEntityToTicketDTO(ticketEntity);
     }
 }

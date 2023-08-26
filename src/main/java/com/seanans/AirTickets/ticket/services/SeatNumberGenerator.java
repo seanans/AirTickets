@@ -3,12 +3,10 @@ package com.seanans.AirTickets.ticket.services;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 @Component
 public class SeatNumberGenerator {
-
 
 
     private final Set<String> generatedSeatNumbers = new HashSet<>();
@@ -20,13 +18,13 @@ public class SeatNumberGenerator {
     private int lastGeneratedRow = 0;
 
 
-
     private String generateSeatNumber(int row, int column) {
         char columnChar = (char) ('A' + column);
         return String.format("%c%02d", columnChar, row);
     }
+
     private String generateNumber() {
-        if (generatedSeatNumbers.contains(generateSeatNumber(lastGeneratedRow, lastGeneratedColumn))){
+        if (generatedSeatNumbers.contains(generateSeatNumber(lastGeneratedRow, lastGeneratedColumn))) {
 
             if (lastGeneratedRow + 1 <= localRows) {
                 lastGeneratedRow += 1;
@@ -56,13 +54,13 @@ public class SeatNumberGenerator {
         this.localColumns = columns;
         this.lastGeneratedRow = 1;
         this.lastGeneratedColumn = 0;
-        if(!generatedSeatNumbers.isEmpty()) {
+        if (!generatedSeatNumbers.isEmpty()) {
             generatedSeatNumbers.clear();
         }
     }
 
     public String generateUniqueSeatNumber() {
-       return generateNumber();
+        return generateNumber();
     }
 
 }

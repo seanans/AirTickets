@@ -6,7 +6,6 @@ import com.seanans.AirTickets.ticket.models.FlightDTO;
 import com.seanans.AirTickets.ticket.models.TicketClassDTO;
 import com.seanans.AirTickets.ticket.models.TicketDTO;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

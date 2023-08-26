@@ -1,7 +1,8 @@
 package com.seanans.AirTickets.exception;
 
-public class ResourceBadRequestException extends RuntimeException{
+public class ResourceBadRequestException extends RuntimeException {
     private String errorMessage;
+
     public ResourceBadRequestException(String errorMessage) {
         super(errorMessage);
         this.setErrorMessage(errorMessage);

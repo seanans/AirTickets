@@ -1,6 +1,5 @@
 package com.seanans.AirTickets.ticket.services;
 
-import com.seanans.AirTickets.ticket.entity.TicketEntity;
 import com.seanans.AirTickets.ticket.models.CreateFlightDTO;
 import com.seanans.AirTickets.ticket.models.TicketDTO;
 import org.springframework.http.HttpStatus;
