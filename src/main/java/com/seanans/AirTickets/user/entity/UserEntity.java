@@ -13,6 +13,7 @@ import java.util.UUID;
 @Setter
 public class UserEntity {
     @Id
+    @GeneratedValue
     private UUID id;
     private String username;
     private String password;

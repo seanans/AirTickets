@@ -1,0 +1,13 @@
+swagger: '3.0'
+info:
+  description: APIs for AirTicket.
+  version: '1.0'
+  title: AirTicket
+  termsOfService: ...
+  contact:
+    name: seanans
+    email: test@gmail.com
+  license:
+    name: License of API
+host: localhost:8888
+basePath: /
